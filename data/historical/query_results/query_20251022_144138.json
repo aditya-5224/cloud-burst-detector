@@ -1,0 +1,320 @@
+{
+  "query": {
+    "latitude": 30.7346,
+    "longitude": 79.0669,
+    "date": "2023-07-09",
+    "timestamp": "2025-10-22T14:41:36.623340"
+  },
+  "event_found": true,
+  "actual_event": {
+    "event_id": "CB_2023_001",
+    "date": "2023-07-09",
+    "time": "afternoon",
+    "location": "Kedarnath, Uttarakhand",
+    "state": "Uttarakhand",
+    "country": "India",
+    "latitude": 30.7346,
+    "longitude": 79.0669,
+    "altitude_m": 3583,
+    "rainfall_mm": 185,
+    "duration_hours": 2,
+    "intensity_mm_per_hour": 92.5,
+    "casualties": 5,
+    "deaths": 3,
+    "affected_villages": 6,
+    "damage_description": "Flash floods in Mandakini river, pilgrims stranded",
+    "source": "IMD, State Emergency Response",
+    "verified": true,
+    "notes": "Area still recovering from 2013 disaster, improved warning systems helped"
+  },
+  "weather_data": {
+    "records_count": 48,
+    "date_range": {
+      "start": "2023-07-08 00:00:00",
+      "end": "2023-07-09 23:00:00"
+    },
+    "target_date_summary": {
+      "avg_temperature": 10.170833333333334,
+      "avg_humidity": 94.125,
+      "total_precipitation": 27.700000000000003,
+      "max_precipitation": 2.3
+    }
+  },
+  "prediction": {
+    "predicted_cloudburst": true,
+    "max_probability": 0.8877706292591224,
+    "high_risk_hours": 6,
+    "total_hours": 24,
+    "region": "uttarakhand_hills",
+    "alert_statistics": {
+      "total_hours": 24,
+      "level_counts": {
+        "MEDIUM": 8,
+        "HIGH": 8,
+        "LOW": 4,
+        "NORMAL": 4
+      },
+      "level_percentages": {
+        "MEDIUM": 33.33333333333333,
+        "HIGH": 33.33333333333333,
+        "LOW": 16.666666666666664,
+        "NORMAL": 16.666666666666664
+      },
+      "actionable_alerts": 16,
+      "actionable_percentage": 66.66666666666666,
+      "max_severity": "3",
+      "max_severity_level": "HIGH",
+      "max_severity_action": "Evacuate low-lying areas, move to higher ground"
+    },
+    "hourly_predictions": [
+      {
+        "time": "2023-07-09 00:00:00",
+        "probability": 0.708729117830975,
+        "predicted": 1,
+        "alert_level": "MEDIUM",
+        "alert_emoji": "\ud83d\udfe0",
+        "alert_color": "orange",
+        "alert_severity": 2,
+        "alert_action": "Avoid unnecessary travel, secure property"
+      },
+      {
+        "time": "2023-07-09 01:00:00",
+        "probability": 0.8101366796771445,
+        "predicted": 1,
+        "alert_level": "HIGH",
+        "alert_emoji": "\ud83d\udd34",
+        "alert_color": "red",
+        "alert_severity": 3,
+        "alert_action": "Evacuate low-lying areas, move to higher ground"
+      },
+      {
+        "time": "2023-07-09 02:00:00",
+        "probability": 0.6419759656042311,
+        "predicted": 1,
+        "alert_level": "LOW",
+        "alert_emoji": "\ud83d\udfe1",
+        "alert_color": "yellow",
+        "alert_severity": 1,
+        "alert_action": "Stay informed, prepare emergency kit"
+      },
+      {
+        "time": "2023-07-09 03:00:00",
+        "probability": 0.7464625661866678,
+        "predicted": 1,
+        "alert_level": "MEDIUM",
+        "alert_emoji": "\ud83d\udfe0",
+        "alert_color": "orange",
+        "alert_severity": 2,
+        "alert_action": "Avoid unnecessary travel, secure property"
+      },
+      {
+        "time": "2023-07-09 04:00:00",
+        "probability": 0.7200457835656435,
+        "predicted": 1,
+        "alert_level": "MEDIUM",
+        "alert_emoji": "\ud83d\udfe0",
+        "alert_color": "orange",
+        "alert_severity": 2,
+        "alert_action": "Avoid unnecessary travel, secure property"
+      },
+      {
+        "time": "2023-07-09 05:00:00",
+        "probability": 0.7328113726309345,
+        "predicted": 1,
+        "alert_level": "MEDIUM",
+        "alert_emoji": "\ud83d\udfe0",
+        "alert_color": "orange",
+        "alert_severity": 2,
+        "alert_action": "Avoid unnecessary travel, secure property"
+      },
+      {
+        "time": "2023-07-09 06:00:00",
+        "probability": 0.45029457721045674,
+        "predicted": 0,
+        "alert_level": "NORMAL",
+        "alert_emoji": "\ud83d\udfe2",
+        "alert_color": "green",
+        "alert_severity": 0,
+        "alert_action": "Monitor weather conditions"
+      },
+      {
+        "time": "2023-07-09 07:00:00",
+        "probability": 0.6226926103118597,
+        "predicted": 1,
+        "alert_level": "LOW",
+        "alert_emoji": "\ud83d\udfe1",
+        "alert_color": "yellow",
+        "alert_severity": 1,
+        "alert_action": "Stay informed, prepare emergency kit"
+      },
+      {
+        "time": "2023-07-09 08:00:00",
+        "probability": 0.776017899333248,
+        "predicted": 1,
+        "alert_level": "MEDIUM",
+        "alert_emoji": "\ud83d\udfe0",
+        "alert_color": "orange",
+        "alert_severity": 2,
+        "alert_action": "Avoid unnecessary travel, secure property"
+      },
+      {
+        "time": "2023-07-09 09:00:00",
+        "probability": 0.8294760603703872,
+        "predicted": 1,
+        "alert_level": "HIGH",
+        "alert_emoji": "\ud83d\udd34",
+        "alert_color": "red",
+        "alert_severity": 3,
+        "alert_action": "Evacuate low-lying areas, move to higher ground"
+      },
+      {
+        "time": "2023-07-09 10:00:00",
+        "probability": 0.8625350663391643,
+        "predicted": 1,
+        "alert_level": "HIGH",
+        "alert_emoji": "\ud83d\udd34",
+        "alert_color": "red",
+        "alert_severity": 3,
+        "alert_action": "Evacuate low-lying areas, move to higher ground"
+      },
+      {
+        "time": "2023-07-09 11:00:00",
+        "probability": 0.8877706292591224,
+        "predicted": 1,
+        "alert_level": "HIGH",
+        "alert_emoji": "\ud83d\udd34",
+        "alert_color": "red",
+        "alert_severity": 3,
+        "alert_action": "Evacuate low-lying areas, move to higher ground"
+      },
+      {
+        "time": "2023-07-09 12:00:00",
+        "probability": 0.8400279944748182,
+        "predicted": 1,
+        "alert_level": "HIGH",
+        "alert_emoji": "\ud83d\udd34",
+        "alert_color": "red",
+        "alert_severity": 3,
+        "alert_action": "Evacuate low-lying areas, move to higher ground"
+      },
+      {
+        "time": "2023-07-09 13:00:00",
+        "probability": 0.7932127244092322,
+        "predicted": 1,
+        "alert_level": "HIGH",
+        "alert_emoji": "\ud83d\udd34",
+        "alert_color": "red",
+        "alert_severity": 3,
+        "alert_action": "Evacuate low-lying areas, move to higher ground"
+      },
+      {
+        "time": "2023-07-09 14:00:00",
+        "probability": 0.8419363209333546,
+        "predicted": 1,
+        "alert_level": "HIGH",
+        "alert_emoji": "\ud83d\udd34",
+        "alert_color": "red",
+        "alert_severity": 3,
+        "alert_action": "Evacuate low-lying areas, move to higher ground"
+      },
+      {
+        "time": "2023-07-09 15:00:00",
+        "probability": 0.6001832387799545,
+        "predicted": 1,
+        "alert_level": "LOW",
+        "alert_emoji": "\ud83d\udfe1",
+        "alert_color": "yellow",
+        "alert_severity": 1,
+        "alert_action": "Stay informed, prepare emergency kit"
+      },
+      {
+        "time": "2023-07-09 16:00:00",
+        "probability": 0.7420361214999133,
+        "predicted": 1,
+        "alert_level": "MEDIUM",
+        "alert_emoji": "\ud83d\udfe0",
+        "alert_color": "orange",
+        "alert_severity": 2,
+        "alert_action": "Avoid unnecessary travel, secure property"
+      },
+      {
+        "time": "2023-07-09 17:00:00",
+        "probability": 0.7716565158771255,
+        "predicted": 1,
+        "alert_level": "MEDIUM",
+        "alert_emoji": "\ud83d\udfe0",
+        "alert_color": "orange",
+        "alert_severity": 2,
+        "alert_action": "Avoid unnecessary travel, secure property"
+      },
+      {
+        "time": "2023-07-09 18:00:00",
+        "probability": 0.42090830012498975,
+        "predicted": 0,
+        "alert_level": "NORMAL",
+        "alert_emoji": "\ud83d\udfe2",
+        "alert_color": "green",
+        "alert_severity": 0,
+        "alert_action": "Monitor weather conditions"
+      },
+      {
+        "time": "2023-07-09 19:00:00",
+        "probability": 0.7874883610621748,
+        "predicted": 1,
+        "alert_level": "MEDIUM",
+        "alert_emoji": "\ud83d\udfe0",
+        "alert_color": "orange",
+        "alert_severity": 2,
+        "alert_action": "Avoid unnecessary travel, secure property"
+      },
+      {
+        "time": "2023-07-09 20:00:00",
+        "probability": 0.7895776092611578,
+        "predicted": 1,
+        "alert_level": "HIGH",
+        "alert_emoji": "\ud83d\udd34",
+        "alert_color": "red",
+        "alert_severity": 3,
+        "alert_action": "Evacuate low-lying areas, move to higher ground"
+      },
+      {
+        "time": "2023-07-09 21:00:00",
+        "probability": 0.6650926847620622,
+        "predicted": 1,
+        "alert_level": "LOW",
+        "alert_emoji": "\ud83d\udfe1",
+        "alert_color": "yellow",
+        "alert_severity": 1,
+        "alert_action": "Stay informed, prepare emergency kit"
+      },
+      {
+        "time": "2023-07-09 22:00:00",
+        "probability": 0.4456687389754028,
+        "predicted": 0,
+        "alert_level": "NORMAL",
+        "alert_emoji": "\ud83d\udfe2",
+        "alert_color": "green",
+        "alert_severity": 0,
+        "alert_action": "Monitor weather conditions"
+      },
+      {
+        "time": "2023-07-09 23:00:00",
+        "probability": 0.2927004617322463,
+        "predicted": 0,
+        "alert_level": "NORMAL",
+        "alert_emoji": "\ud83d\udfe2",
+        "alert_color": "green",
+        "alert_severity": 0,
+        "alert_action": "Monitor weather conditions"
+      }
+    ]
+  },
+  "validation": {
+    "actual_cloudburst": true,
+    "predicted_cloudburst": true,
+    "correct_prediction": true,
+    "validation_type": "TRUE_POSITIVE",
+    "warning_time_hours": 13.0,
+    "max_probability": 0.8877706292591224
+  }
+}

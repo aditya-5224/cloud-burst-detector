@@ -1,0 +1,120 @@
+# Cloud Burst Prediction System Configuration
+
+# API Configurations
+weather_apis:
+  weatherapi:
+    base_url: "https://api.weatherapi.com/v1/current.json"
+    api_key: "e1502568b84d414da6d82723252110"  # WeatherAPI.com - Most accurate real-time data
+    
+  open_meteo:
+    base_url: "https://api.open-meteo.com/v1/forecast"
+    hourly_params:
+      - "temperature_2m"
+      - "relative_humidity_2m"
+      - "dewpoint_2m"
+      - "pressure_msl"
+      - "wind_speed_10m"
+      - "wind_direction_10m"
+      - "cloud_cover"
+      - "precipitation"
+      - "cape"  # Convective Available Potential Energy - critical for cloudburst detection
+    
+  openweathermap:
+    base_url: "https://api.openweathermap.org/data/2.5/weather"
+    api_key: "YOUR_OPENWEATHERMAP_API_KEY"  # Replace with actual key
+    units: "metric"
+
+# Google Earth Engine Configuration
+earth_engine:
+  service_account_key: "path/to/service-account-key.json"  # Replace with actual path
+  collection: "COPERNICUS/S2_CLOUD_PROBABILITY"
+  bands: ["probability"]
+  scale: 20  # meters per pixel
+  
+# Geographic Configuration
+regions:
+  default:
+    name: "Mumbai Region"
+    latitude: 19.0760
+    longitude: 72.8777
+    bbox:
+      north: 19.5
+      south: 18.5
+      east: 73.2
+      west: 72.4
+
+# Data Storage Configuration
+data:
+  raw_data_path: "./data/raw"
+  processed_data_path: "./data/processed"
+  satellite_images_path: "./data/satellite"
+  weather_data_path: "./data/weather"
+  models_path: "./models"
+  
+# Model Configuration
+models:
+  random_forest:
+    n_estimators: 100
+    max_depth: 20
+    random_state: 42
+    
+  svm:
+    kernel: "rbf"
+    C: 1.0
+    gamma: "scale"
+    
+  lstm:
+    layers: 2
+    units: 64
+    dropout: 0.2
+    epochs: 100
+    batch_size: 32
+    
+# Feature Engineering Configuration
+features:
+  rolling_window_hours: [3, 6, 12, 24]
+  atmospheric_indices:
+    - "CAPE"  # Convective Available Potential Energy
+    - "Lifted_Index"
+    - "K_Index"
+    - "Total_Totals_Index"
+    
+  image_features:
+    - "cloud_coverage_percentage"
+    - "glcm_contrast"
+    - "glcm_dissimilarity"
+    - "glcm_homogeneity"
+    - "blob_count"
+    - "infrared_mean"
+
+# Training Configuration
+training:
+  test_size: 0.2
+  validation_size: 0.1
+  random_state: 42
+  cross_validation_folds: 5
+  
+# Performance Thresholds
+thresholds:
+  api_success_rate: 0.95
+  cloud_mask_accuracy: 0.85
+  model_f1_score: 0.70
+  
+# Dashboard Configuration
+dashboard:
+  title: "Cloud Burst Prediction Dashboard"
+  refresh_interval_minutes: 15
+  map_center: [19.0760, 72.8777]
+  map_zoom: 10
+  
+# API Configuration
+api:
+  host: "localhost"  # Use localhost for client connections (0.0.0.0 only for server binding)
+  port: 8000
+  reload: true
+  
+# Logging Configuration
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "./logs/cloudburst.log"

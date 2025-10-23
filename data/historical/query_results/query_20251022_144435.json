@@ -1,0 +1,318 @@
+{
+  "query": {
+    "latitude": 30.7346,
+    "longitude": 79.0669,
+    "date": "2013-06-16",
+    "timestamp": "2025-10-22T14:44:34.089577"
+  },
+  "event_found": true,
+  "actual_event": {
+    "event_id": "CB_2013_001",
+    "date": "2013-06-16",
+    "time": "evening",
+    "location": "Kedarnath, Uttarakhand",
+    "state": "Uttarakhand",
+    "country": "India",
+    "latitude": 30.7346,
+    "longitude": 79.0669,
+    "altitude_m": 3583,
+    "rainfall_mm": 340,
+    "duration_hours": 3,
+    "intensity_mm_per_hour": 113.33,
+    "casualties": 5700,
+    "deaths": 5700,
+    "affected_villages": 45,
+    "damage_description": "Devastating flash floods and landslides, destruction of Kedarnath temple area",
+    "source": "IMD Reports, Government Records",
+    "verified": true,
+    "notes": "One of India's worst natural disasters. Multi-day rainfall culminating in extreme cloud burst."
+  },
+  "weather_data": {
+    "records_count": 48,
+    "date_range": {
+      "start": "2013-06-15 00:00:00",
+      "end": "2013-06-16 23:00:00"
+    },
+    "target_date_summary": {
+      "avg_temperature": 6.575,
+      "avg_humidity": 95.95833333333333,
+      "total_precipitation": 132.5,
+      "max_precipitation": 7.8
+    }
+  },
+  "prediction": {
+    "predicted_cloudburst": true,
+    "max_probability": 0.9970242536856897,
+    "high_risk_hours": 23,
+    "total_hours": 24,
+    "region": "uttarakhand_hills",
+    "alert_statistics": {
+      "total_hours": 24,
+      "level_counts": {
+        "EXTREME": 22,
+        "LOW": 1,
+        "HIGH": 1
+      },
+      "level_percentages": {
+        "EXTREME": 91.66666666666666,
+        "LOW": 4.166666666666666,
+        "HIGH": 4.166666666666666
+      },
+      "actionable_alerts": 23,
+      "actionable_percentage": 95.83333333333334,
+      "max_severity": "4",
+      "max_severity_level": "EXTREME",
+      "max_severity_action": "IMMEDIATE EVACUATION REQUIRED - Life-threatening situation"
+    },
+    "hourly_predictions": [
+      {
+        "time": "2013-06-16 00:00:00",
+        "probability": 0.552173501686257,
+        "predicted": 1,
+        "alert_level": "LOW",
+        "alert_emoji": "\ud83d\udfe1",
+        "alert_color": "yellow",
+        "alert_severity": 1,
+        "alert_action": "Stay informed, prepare emergency kit"
+      },
+      {
+        "time": "2013-06-16 01:00:00",
+        "probability": 0.836237687792215,
+        "predicted": 1,
+        "alert_level": "HIGH",
+        "alert_emoji": "\ud83d\udd34",
+        "alert_color": "red",
+        "alert_severity": 3,
+        "alert_action": "Evacuate low-lying areas, move to higher ground"
+      },
+      {
+        "time": "2013-06-16 02:00:00",
+        "probability": 0.9582835395172021,
+        "predicted": 1,
+        "alert_level": "EXTREME",
+        "alert_emoji": "\ud83d\udfe3",
+        "alert_color": "purple",
+        "alert_severity": 4,
+        "alert_action": "IMMEDIATE EVACUATION REQUIRED - Life-threatening situation"
+      },
+      {
+        "time": "2013-06-16 03:00:00",
+        "probability": 0.9292924584179526,
+        "predicted": 1,
+        "alert_level": "EXTREME",
+        "alert_emoji": "\ud83d\udfe3",
+        "alert_color": "purple",
+        "alert_severity": 4,
+        "alert_action": "IMMEDIATE EVACUATION REQUIRED - Life-threatening situation"
+      },
+      {
+        "time": "2013-06-16 04:00:00",
+        "probability": 0.971699292138341,
+        "predicted": 1,
+        "alert_level": "EXTREME",
+        "alert_emoji": "\ud83d\udfe3",
+        "alert_color": "purple",
+        "alert_severity": 4,
+        "alert_action": "IMMEDIATE EVACUATION REQUIRED - Life-threatening situation"
+      },
+      {
+        "time": "2013-06-16 05:00:00",
+        "probability": 0.9681469236238606,
+        "predicted": 1,
+        "alert_level": "EXTREME",
+        "alert_emoji": "\ud83d\udfe3",
+        "alert_color": "purple",
+        "alert_severity": 4,
+        "alert_action": "IMMEDIATE EVACUATION REQUIRED - Life-threatening situation"
+      },
+      {
+        "time": "2013-06-16 06:00:00",
+        "probability": 0.9100007427675982,
+        "predicted": 1,
+        "alert_level": "EXTREME",
+        "alert_emoji": "\ud83d\udfe3",
+        "alert_color": "purple",
+        "alert_severity": 4,
+        "alert_action": "IMMEDIATE EVACUATION REQUIRED - Life-threatening situation"
+      },
+      {
+        "time": "2013-06-16 07:00:00",
+        "probability": 0.9462777505891693,
+        "predicted": 1,
+        "alert_level": "EXTREME",
+        "alert_emoji": "\ud83d\udfe3",
+        "alert_color": "purple",
+        "alert_severity": 4,
+        "alert_action": "IMMEDIATE EVACUATION REQUIRED - Life-threatening situation"
+      },
+      {
+        "time": "2013-06-16 08:00:00",
+        "probability": 0.9346456558499281,
+        "predicted": 1,
+        "alert_level": "EXTREME",
+        "alert_emoji": "\ud83d\udfe3",
+        "alert_color": "purple",
+        "alert_severity": 4,
+        "alert_action": "IMMEDIATE EVACUATION REQUIRED - Life-threatening situation"
+      },
+      {
+        "time": "2013-06-16 09:00:00",
+        "probability": 0.936942367504129,
+        "predicted": 1,
+        "alert_level": "EXTREME",
+        "alert_emoji": "\ud83d\udfe3",
+        "alert_color": "purple",
+        "alert_severity": 4,
+        "alert_action": "IMMEDIATE EVACUATION REQUIRED - Life-threatening situation"
+      },
+      {
+        "time": "2013-06-16 10:00:00",
+        "probability": 0.9501486585951442,
+        "predicted": 1,
+        "alert_level": "EXTREME",
+        "alert_emoji": "\ud83d\udfe3",
+        "alert_color": "purple",
+        "alert_severity": 4,
+        "alert_action": "IMMEDIATE EVACUATION REQUIRED - Life-threatening situation"
+      },
+      {
+        "time": "2013-06-16 11:00:00",
+        "probability": 0.9645145511816042,
+        "predicted": 1,
+        "alert_level": "EXTREME",
+        "alert_emoji": "\ud83d\udfe3",
+        "alert_color": "purple",
+        "alert_severity": 4,
+        "alert_action": "IMMEDIATE EVACUATION REQUIRED - Life-threatening situation"
+      },
+      {
+        "time": "2013-06-16 12:00:00",
+        "probability": 0.9722017834907887,
+        "predicted": 1,
+        "alert_level": "EXTREME",
+        "alert_emoji": "\ud83d\udfe3",
+        "alert_color": "purple",
+        "alert_severity": 4,
+        "alert_action": "IMMEDIATE EVACUATION REQUIRED - Life-threatening situation"
+      },
+      {
+        "time": "2013-06-16 13:00:00",
+        "probability": 0.9543436856595013,
+        "predicted": 1,
+        "alert_level": "EXTREME",
+        "alert_emoji": "\ud83d\udfe3",
+        "alert_color": "purple",
+        "alert_severity": 4,
+        "alert_action": "IMMEDIATE EVACUATION REQUIRED - Life-threatening situation"
+      },
+      {
+        "time": "2013-06-16 14:00:00",
+        "probability": 0.995477386684466,
+        "predicted": 1,
+        "alert_level": "EXTREME",
+        "alert_emoji": "\ud83d\udfe3",
+        "alert_color": "purple",
+        "alert_severity": 4,
+        "alert_action": "IMMEDIATE EVACUATION REQUIRED - Life-threatening situation"
+      },
+      {
+        "time": "2013-06-16 15:00:00",
+        "probability": 0.9030853925531165,
+        "predicted": 1,
+        "alert_level": "EXTREME",
+        "alert_emoji": "\ud83d\udfe3",
+        "alert_color": "purple",
+        "alert_severity": 4,
+        "alert_action": "IMMEDIATE EVACUATION REQUIRED - Life-threatening situation"
+      },
+      {
+        "time": "2013-06-16 16:00:00",
+        "probability": 0.9891857811928465,
+        "predicted": 1,
+        "alert_level": "EXTREME",
+        "alert_emoji": "\ud83d\udfe3",
+        "alert_color": "purple",
+        "alert_severity": 4,
+        "alert_action": "IMMEDIATE EVACUATION REQUIRED - Life-threatening situation"
+      },
+      {
+        "time": "2013-06-16 17:00:00",
+        "probability": 0.9904351439165978,
+        "predicted": 1,
+        "alert_level": "EXTREME",
+        "alert_emoji": "\ud83d\udfe3",
+        "alert_color": "purple",
+        "alert_severity": 4,
+        "alert_action": "IMMEDIATE EVACUATION REQUIRED - Life-threatening situation"
+      },
+      {
+        "time": "2013-06-16 18:00:00",
+        "probability": 0.9853099280070774,
+        "predicted": 1,
+        "alert_level": "EXTREME",
+        "alert_emoji": "\ud83d\udfe3",
+        "alert_color": "purple",
+        "alert_severity": 4,
+        "alert_action": "IMMEDIATE EVACUATION REQUIRED - Life-threatening situation"
+      },
+      {
+        "time": "2013-06-16 19:00:00",
+        "probability": 0.9970242536856897,
+        "predicted": 1,
+        "alert_level": "EXTREME",
+        "alert_emoji": "\ud83d\udfe3",
+        "alert_color": "purple",
+        "alert_severity": 4,
+        "alert_action": "IMMEDIATE EVACUATION REQUIRED - Life-threatening situation"
+      },
+      {
+        "time": "2013-06-16 20:00:00",
+        "probability": 0.9893120402180606,
+        "predicted": 1,
+        "alert_level": "EXTREME",
+        "alert_emoji": "\ud83d\udfe3",
+        "alert_color": "purple",
+        "alert_severity": 4,
+        "alert_action": "IMMEDIATE EVACUATION REQUIRED - Life-threatening situation"
+      },
+      {
+        "time": "2013-06-16 21:00:00",
+        "probability": 0.9889728839209133,
+        "predicted": 1,
+        "alert_level": "EXTREME",
+        "alert_emoji": "\ud83d\udfe3",
+        "alert_color": "purple",
+        "alert_severity": 4,
+        "alert_action": "IMMEDIATE EVACUATION REQUIRED - Life-threatening situation"
+      },
+      {
+        "time": "2013-06-16 22:00:00",
+        "probability": 0.9583364556933219,
+        "predicted": 1,
+        "alert_level": "EXTREME",
+        "alert_emoji": "\ud83d\udfe3",
+        "alert_color": "purple",
+        "alert_severity": 4,
+        "alert_action": "IMMEDIATE EVACUATION REQUIRED - Life-threatening situation"
+      },
+      {
+        "time": "2013-06-16 23:00:00",
+        "probability": 0.9621504894855054,
+        "predicted": 1,
+        "alert_level": "EXTREME",
+        "alert_emoji": "\ud83d\udfe3",
+        "alert_color": "purple",
+        "alert_severity": 4,
+        "alert_action": "IMMEDIATE EVACUATION REQUIRED - Life-threatening situation"
+      }
+    ]
+  },
+  "validation": {
+    "actual_cloudburst": true,
+    "predicted_cloudburst": true,
+    "correct_prediction": true,
+    "validation_type": "TRUE_POSITIVE",
+    "warning_time_hours": 13.0,
+    "max_probability": 0.9970242536856897
+  }
+}

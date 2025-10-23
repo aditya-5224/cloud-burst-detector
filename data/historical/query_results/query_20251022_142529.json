@@ -1,0 +1,179 @@
+{
+  "query": {
+    "latitude": 30.7346,
+    "longitude": 79.0669,
+    "date": "2023-07-09",
+    "timestamp": "2025-10-22T14:25:27.464960"
+  },
+  "event_found": true,
+  "actual_event": {
+    "event_id": "CB_2023_001",
+    "date": "2023-07-09",
+    "time": "afternoon",
+    "location": "Kedarnath, Uttarakhand",
+    "state": "Uttarakhand",
+    "country": "India",
+    "latitude": 30.7346,
+    "longitude": 79.0669,
+    "altitude_m": 3583,
+    "rainfall_mm": 185,
+    "duration_hours": 2,
+    "intensity_mm_per_hour": 92.5,
+    "casualties": 5,
+    "deaths": 3,
+    "affected_villages": 6,
+    "damage_description": "Flash floods in Mandakini river, pilgrims stranded",
+    "source": "IMD, State Emergency Response",
+    "verified": true,
+    "notes": "Area still recovering from 2013 disaster, improved warning systems helped"
+  },
+  "weather_data": {
+    "records_count": 48,
+    "date_range": {
+      "start": "2023-07-08 00:00:00",
+      "end": "2023-07-09 23:00:00"
+    },
+    "target_date_summary": {
+      "avg_temperature": 10.170833333333334,
+      "avg_humidity": 94.125,
+      "total_precipitation": 27.700000000000003,
+      "max_precipitation": 2.3
+    }
+  },
+  "prediction": {
+    "predicted_cloudburst": true,
+    "max_probability": 0.8877706292591223,
+    "high_risk_hours": 16,
+    "total_hours": 24,
+    "hourly_predictions": [
+      {
+        "time": "2023-07-09 00:00:00",
+        "probability": 0.7087291178309749,
+        "predicted": 1
+      },
+      {
+        "time": "2023-07-09 01:00:00",
+        "probability": 0.8101366796771443,
+        "predicted": 1
+      },
+      {
+        "time": "2023-07-09 02:00:00",
+        "probability": 0.641975965604231,
+        "predicted": 1
+      },
+      {
+        "time": "2023-07-09 03:00:00",
+        "probability": 0.7464625661866678,
+        "predicted": 1
+      },
+      {
+        "time": "2023-07-09 04:00:00",
+        "probability": 0.7200457835656434,
+        "predicted": 1
+      },
+      {
+        "time": "2023-07-09 05:00:00",
+        "probability": 0.7328113726309344,
+        "predicted": 1
+      },
+      {
+        "time": "2023-07-09 06:00:00",
+        "probability": 0.45029457721045674,
+        "predicted": 0
+      },
+      {
+        "time": "2023-07-09 07:00:00",
+        "probability": 0.6226926103118599,
+        "predicted": 1
+      },
+      {
+        "time": "2023-07-09 08:00:00",
+        "probability": 0.7760178993332483,
+        "predicted": 1
+      },
+      {
+        "time": "2023-07-09 09:00:00",
+        "probability": 0.8294760603703872,
+        "predicted": 1
+      },
+      {
+        "time": "2023-07-09 10:00:00",
+        "probability": 0.862535066339164,
+        "predicted": 1
+      },
+      {
+        "time": "2023-07-09 11:00:00",
+        "probability": 0.8877706292591223,
+        "predicted": 1
+      },
+      {
+        "time": "2023-07-09 12:00:00",
+        "probability": 0.8400279944748179,
+        "predicted": 1
+      },
+      {
+        "time": "2023-07-09 13:00:00",
+        "probability": 0.7932127244092321,
+        "predicted": 1
+      },
+      {
+        "time": "2023-07-09 14:00:00",
+        "probability": 0.8419363209333542,
+        "predicted": 1
+      },
+      {
+        "time": "2023-07-09 15:00:00",
+        "probability": 0.6001832387799543,
+        "predicted": 1
+      },
+      {
+        "time": "2023-07-09 16:00:00",
+        "probability": 0.7420361214999132,
+        "predicted": 1
+      },
+      {
+        "time": "2023-07-09 17:00:00",
+        "probability": 0.7716565158771254,
+        "predicted": 1
+      },
+      {
+        "time": "2023-07-09 18:00:00",
+        "probability": 0.4209083001249898,
+        "predicted": 0
+      },
+      {
+        "time": "2023-07-09 19:00:00",
+        "probability": 0.787488361062175,
+        "predicted": 1
+      },
+      {
+        "time": "2023-07-09 20:00:00",
+        "probability": 0.7895776092611579,
+        "predicted": 1
+      },
+      {
+        "time": "2023-07-09 21:00:00",
+        "probability": 0.6650926847620618,
+        "predicted": 1
+      },
+      {
+        "time": "2023-07-09 22:00:00",
+        "probability": 0.4456687389754027,
+        "predicted": 0
+      },
+      {
+        "time": "2023-07-09 23:00:00",
+        "probability": 0.29270046173224623,
+        "predicted": 0
+      }
+    ]
+  },
+  "validation": {
+    "actual_cloudburst": true,
+    "predicted_cloudburst": true,
+    "correct_prediction": true,
+    "validation_type": "TRUE_POSITIVE",
+    "warning_time_hours": 14.0,
+    "max_probability": 0.8877706292591223
+  }
+}

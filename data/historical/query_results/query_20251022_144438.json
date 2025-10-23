@@ -1,0 +1,320 @@
+{
+  "query": {
+    "latitude": 34.2268,
+    "longitude": 75.5345,
+    "date": "2022-07-28",
+    "timestamp": "2025-10-22T14:44:37.356276"
+  },
+  "event_found": true,
+  "actual_event": {
+    "event_id": "CB_2022_001",
+    "date": "2022-07-28",
+    "time": "evening",
+    "location": "Amarnath, Jammu & Kashmir",
+    "state": "Jammu & Kashmir",
+    "country": "India",
+    "latitude": 34.2268,
+    "longitude": 75.5345,
+    "altitude_m": 3888,
+    "rainfall_mm": 220,
+    "duration_hours": 1.5,
+    "intensity_mm_per_hour": 146.67,
+    "casualties": 16,
+    "deaths": 16,
+    "affected_villages": 5,
+    "damage_description": "Flash floods at pilgrimage base camp, tents washed away",
+    "source": "NDMA, Army Reports",
+    "verified": true,
+    "notes": "High altitude cloudburst affecting pilgrims during Amarnath Yatra"
+  },
+  "weather_data": {
+    "records_count": 48,
+    "date_range": {
+      "start": "2022-07-27 00:00:00",
+      "end": "2022-07-28 23:00:00"
+    },
+    "target_date_summary": {
+      "avg_temperature": 5.720833333333334,
+      "avg_humidity": 94.33333333333333,
+      "total_precipitation": 9.2,
+      "max_precipitation": 4.0
+    }
+  },
+  "prediction": {
+    "predicted_cloudburst": true,
+    "max_probability": 0.8058616540920741,
+    "high_risk_hours": 1,
+    "total_hours": 24,
+    "region": "plains",
+    "alert_statistics": {
+      "total_hours": 24,
+      "level_counts": {
+        "MEDIUM": 9,
+        "LOW": 8,
+        "HIGH": 6,
+        "NORMAL": 1
+      },
+      "level_percentages": {
+        "MEDIUM": 37.5,
+        "LOW": 33.33333333333333,
+        "HIGH": 25.0,
+        "NORMAL": 4.166666666666666
+      },
+      "actionable_alerts": 15,
+      "actionable_percentage": 62.5,
+      "max_severity": "3",
+      "max_severity_level": "HIGH",
+      "max_severity_action": "Evacuate low-lying areas, move to higher ground"
+    },
+    "hourly_predictions": [
+      {
+        "time": "2022-07-28 00:00:00",
+        "probability": 0.5834881339115205,
+        "predicted": 1,
+        "alert_level": "LOW",
+        "alert_emoji": "\ud83d\udfe1",
+        "alert_color": "yellow",
+        "alert_severity": 1,
+        "alert_action": "Stay informed, prepare emergency kit"
+      },
+      {
+        "time": "2022-07-28 01:00:00",
+        "probability": 0.45338396971919337,
+        "predicted": 0,
+        "alert_level": "NORMAL",
+        "alert_emoji": "\ud83d\udfe2",
+        "alert_color": "green",
+        "alert_severity": 0,
+        "alert_action": "Monitor weather conditions"
+      },
+      {
+        "time": "2022-07-28 02:00:00",
+        "probability": 0.6259942109363615,
+        "predicted": 1,
+        "alert_level": "LOW",
+        "alert_emoji": "\ud83d\udfe1",
+        "alert_color": "yellow",
+        "alert_severity": 1,
+        "alert_action": "Stay informed, prepare emergency kit"
+      },
+      {
+        "time": "2022-07-28 03:00:00",
+        "probability": 0.6889955118813808,
+        "predicted": 1,
+        "alert_level": "MEDIUM",
+        "alert_emoji": "\ud83d\udfe0",
+        "alert_color": "orange",
+        "alert_severity": 2,
+        "alert_action": "Avoid unnecessary travel, secure property"
+      },
+      {
+        "time": "2022-07-28 04:00:00",
+        "probability": 0.5735351685359035,
+        "predicted": 1,
+        "alert_level": "LOW",
+        "alert_emoji": "\ud83d\udfe1",
+        "alert_color": "yellow",
+        "alert_severity": 1,
+        "alert_action": "Stay informed, prepare emergency kit"
+      },
+      {
+        "time": "2022-07-28 05:00:00",
+        "probability": 0.5761536923497662,
+        "predicted": 1,
+        "alert_level": "LOW",
+        "alert_emoji": "\ud83d\udfe1",
+        "alert_color": "yellow",
+        "alert_severity": 1,
+        "alert_action": "Stay informed, prepare emergency kit"
+      },
+      {
+        "time": "2022-07-28 06:00:00",
+        "probability": 0.6952997590680023,
+        "predicted": 1,
+        "alert_level": "MEDIUM",
+        "alert_emoji": "\ud83d\udfe0",
+        "alert_color": "orange",
+        "alert_severity": 2,
+        "alert_action": "Avoid unnecessary travel, secure property"
+      },
+      {
+        "time": "2022-07-28 07:00:00",
+        "probability": 0.5071850633995628,
+        "predicted": 1,
+        "alert_level": "LOW",
+        "alert_emoji": "\ud83d\udfe1",
+        "alert_color": "yellow",
+        "alert_severity": 1,
+        "alert_action": "Stay informed, prepare emergency kit"
+      },
+      {
+        "time": "2022-07-28 08:00:00",
+        "probability": 0.6285747610641611,
+        "predicted": 1,
+        "alert_level": "LOW",
+        "alert_emoji": "\ud83d\udfe1",
+        "alert_color": "yellow",
+        "alert_severity": 1,
+        "alert_action": "Stay informed, prepare emergency kit"
+      },
+      {
+        "time": "2022-07-28 09:00:00",
+        "probability": 0.6852852397914266,
+        "predicted": 1,
+        "alert_level": "MEDIUM",
+        "alert_emoji": "\ud83d\udfe0",
+        "alert_color": "orange",
+        "alert_severity": 2,
+        "alert_action": "Avoid unnecessary travel, secure property"
+      },
+      {
+        "time": "2022-07-28 10:00:00",
+        "probability": 0.5606848956479261,
+        "predicted": 1,
+        "alert_level": "LOW",
+        "alert_emoji": "\ud83d\udfe1",
+        "alert_color": "yellow",
+        "alert_severity": 1,
+        "alert_action": "Stay informed, prepare emergency kit"
+      },
+      {
+        "time": "2022-07-28 11:00:00",
+        "probability": 0.7369737758807097,
+        "predicted": 1,
+        "alert_level": "MEDIUM",
+        "alert_emoji": "\ud83d\udfe0",
+        "alert_color": "orange",
+        "alert_severity": 2,
+        "alert_action": "Avoid unnecessary travel, secure property"
+      },
+      {
+        "time": "2022-07-28 12:00:00",
+        "probability": 0.7398416526496113,
+        "predicted": 1,
+        "alert_level": "MEDIUM",
+        "alert_emoji": "\ud83d\udfe0",
+        "alert_color": "orange",
+        "alert_severity": 2,
+        "alert_action": "Avoid unnecessary travel, secure property"
+      },
+      {
+        "time": "2022-07-28 13:00:00",
+        "probability": 0.5848871964790864,
+        "predicted": 1,
+        "alert_level": "LOW",
+        "alert_emoji": "\ud83d\udfe1",
+        "alert_color": "yellow",
+        "alert_severity": 1,
+        "alert_action": "Stay informed, prepare emergency kit"
+      },
+      {
+        "time": "2022-07-28 14:00:00",
+        "probability": 0.7321070540499214,
+        "predicted": 1,
+        "alert_level": "MEDIUM",
+        "alert_emoji": "\ud83d\udfe0",
+        "alert_color": "orange",
+        "alert_severity": 2,
+        "alert_action": "Avoid unnecessary travel, secure property"
+      },
+      {
+        "time": "2022-07-28 15:00:00",
+        "probability": 0.8058616540920741,
+        "predicted": 1,
+        "alert_level": "HIGH",
+        "alert_emoji": "\ud83d\udd34",
+        "alert_color": "red",
+        "alert_severity": 3,
+        "alert_action": "Evacuate low-lying areas, move to higher ground"
+      },
+      {
+        "time": "2022-07-28 16:00:00",
+        "probability": 0.7997251237730311,
+        "predicted": 1,
+        "alert_level": "HIGH",
+        "alert_emoji": "\ud83d\udd34",
+        "alert_color": "red",
+        "alert_severity": 3,
+        "alert_action": "Evacuate low-lying areas, move to higher ground"
+      },
+      {
+        "time": "2022-07-28 17:00:00",
+        "probability": 0.7014634391477567,
+        "predicted": 1,
+        "alert_level": "MEDIUM",
+        "alert_emoji": "\ud83d\udfe0",
+        "alert_color": "orange",
+        "alert_severity": 2,
+        "alert_action": "Avoid unnecessary travel, secure property"
+      },
+      {
+        "time": "2022-07-28 18:00:00",
+        "probability": 0.7910450983843659,
+        "predicted": 1,
+        "alert_level": "HIGH",
+        "alert_emoji": "\ud83d\udd34",
+        "alert_color": "red",
+        "alert_severity": 3,
+        "alert_action": "Evacuate low-lying areas, move to higher ground"
+      },
+      {
+        "time": "2022-07-28 19:00:00",
+        "probability": 0.7897579942680278,
+        "predicted": 1,
+        "alert_level": "HIGH",
+        "alert_emoji": "\ud83d\udd34",
+        "alert_color": "red",
+        "alert_severity": 3,
+        "alert_action": "Evacuate low-lying areas, move to higher ground"
+      },
+      {
+        "time": "2022-07-28 20:00:00",
+        "probability": 0.7917589127763915,
+        "predicted": 1,
+        "alert_level": "HIGH",
+        "alert_emoji": "\ud83d\udd34",
+        "alert_color": "red",
+        "alert_severity": 3,
+        "alert_action": "Evacuate low-lying areas, move to higher ground"
+      },
+      {
+        "time": "2022-07-28 21:00:00",
+        "probability": 0.7668424768417951,
+        "predicted": 1,
+        "alert_level": "HIGH",
+        "alert_emoji": "\ud83d\udd34",
+        "alert_color": "red",
+        "alert_severity": 3,
+        "alert_action": "Evacuate low-lying areas, move to higher ground"
+      },
+      {
+        "time": "2022-07-28 22:00:00",
+        "probability": 0.7252403721339139,
+        "predicted": 1,
+        "alert_level": "MEDIUM",
+        "alert_emoji": "\ud83d\udfe0",
+        "alert_color": "orange",
+        "alert_severity": 2,
+        "alert_action": "Avoid unnecessary travel, secure property"
+      },
+      {
+        "time": "2022-07-28 23:00:00",
+        "probability": 0.7447727760901336,
+        "predicted": 1,
+        "alert_level": "MEDIUM",
+        "alert_emoji": "\ud83d\udfe0",
+        "alert_color": "orange",
+        "alert_severity": 2,
+        "alert_action": "Avoid unnecessary travel, secure property"
+      }
+    ]
+  },
+  "validation": {
+    "actual_cloudburst": true,
+    "predicted_cloudburst": true,
+    "correct_prediction": true,
+    "validation_type": "TRUE_POSITIVE",
+    "warning_time_hours": -1.0,
+    "max_probability": 0.8058616540920741
+  }
+}
