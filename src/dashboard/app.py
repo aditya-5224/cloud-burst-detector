@@ -146,10 +146,16 @@ def get_live_prediction(latitude: float, longitude: float, model: str = 'random_
     try:
         response = requests.post(url, json=payload, timeout=10)
         response.raise_for_status()
-        return response.json()
+        result = response.json()
+        
+        # Add success flag if not present
+        if 'success' not in result:
+            result['success'] = True
+            
+        return result
     except requests.exceptions.RequestException as e:
         logger.error(f"Live prediction failed: {e}")
-        return None
+        return {'success': False, 'error': str(e)}
 
 # Generate sample data functions
 @st.cache_data(ttl=300)  # Cache for 5 minutes
@@ -160,7 +166,7 @@ def generate_sample_weather_data(hours: int = 48) -> pd.DataFrame:
     dates = pd.date_range(
         start=datetime.now() - timedelta(hours=hours),
         end=datetime.now(),
-        freq='H'
+        freq='h'
     )
     
     # Generate realistic weather patterns
@@ -426,14 +432,19 @@ def main():
     # Data refresh button
     if st.sidebar.button("🔄 Refresh Data"):
         st.cache_data.clear()
-        st.experimental_rerun()
+        st.rerun()
     
     # Time range selector
     hours_back = st.sidebar.slider("Hours of Historical Data", 12, 168, 48)
     
     # Live Weather Section
     st.sidebar.subheader("📍 Live Weather Prediction")
-    st.sidebar.write("Get real-time predictions for any location")
+    
+    # Show status indicator
+    if st.session_state.get('live_result') and not st.session_state.get('show_sample_data', False):
+        st.sidebar.info("✅ **ACTIVE:** Displaying live prediction results in main view")
+    else:
+        st.sidebar.write("Get real-time predictions for any location")
     
     with st.sidebar.form("live_weather_form"):
         lat = st.number_input("Latitude", -90.0, 90.0, 19.0760, format="%.4f", help="Mumbai: 19.0760")
@@ -457,37 +468,52 @@ def main():
     # Initialize session state for live prediction
     if 'live_result' not in st.session_state:
         st.session_state.live_result = None
+    if 'show_sample_data' not in st.session_state:
+        st.session_state.show_sample_data = False
     
     # Handle live weather prediction
     if live_predict_button:
         with st.spinner(f"🌐 Fetching live weather data for ({lat}, {lon})..."):
             live_result = get_live_prediction(lat, lon, model_choice)
             
-            if live_result and live_result.get('success'):
+            if live_result and live_result.get('success') is not False:
                 # Store in session state
                 st.session_state.live_result = live_result
+                st.session_state.show_sample_data = False
                 st.success("✅ Live prediction complete!")
+                st.rerun()
             else:
                 st.session_state.live_result = None
-                st.error("❌ Failed to fetch live weather data. Please check API connection.")
+                error_msg = live_result.get('error', 'Unknown error') if live_result else 'No response from API'
+                st.error(f"❌ Failed to fetch live weather data: {error_msg}")
+                st.info("💡 Make sure the API is running on http://localhost:8000")
                 if live_result:
-                    st.error(f"Error: {live_result.get('error', 'Unknown error')}")
+                    st.error(f"Error details: {live_result.get('error', 'Unknown error')}")
+                else:
+                    st.error("No response from API. Check if API server is running on http://localhost:8000")
     
     # Main content area
-    # Check if we have live prediction results
-    if st.session_state.live_result:
+    # Check if we have live prediction results and not showing sample data
+    if st.session_state.live_result and not st.session_state.show_sample_data:
         # Display Live Weather Results
         live_result = st.session_state.live_result
         weather_data = live_result.get('weather_data', {})
+        
+        # Prominent banner showing live data mode
+        st.success("🌐 **LIVE WEATHER DATA MODE** - Showing real-time prediction results")
         
         # Show location name prominently in header
         location_name = weather_data.get('location_name', 'Unknown Location')
         st.header(f"🌍 Live Weather Prediction - {location_name}")
         
         # Add a button to clear and go back to sample data
-        if st.button("🔄 Back to Sample Data View"):
-            st.session_state.live_result = None
-            st.rerun()
+        col_btn1, col_btn2 = st.columns([1, 4])
+        with col_btn1:
+            if st.button("🔄 Back to Sample Data", key="back_to_sample"):
+                st.session_state.show_sample_data = True
+                st.rerun()
+        with col_btn2:
+            st.caption("Click to return to the sample data demonstration view")
         
         # Display location details
         location_details = weather_data.get('location_details', {})
@@ -525,7 +551,7 @@ def main():
         with col1:
             # Risk gauge
             fig_gauge = create_risk_gauge(live_result.get('probability', 0))
-            st.plotly_chart(fig_gauge, use_container_width=True)
+            st.plotly_chart(fig_gauge, width='stretch')
         
         with col2:
             if live_result.get('prediction') == 1:
@@ -568,7 +594,7 @@ def main():
                 
                 # Risk gauge
                 fig_gauge = create_risk_gauge(latest_prediction['probability'])
-                st.plotly_chart(fig_gauge, use_container_width=True)
+                st.plotly_chart(fig_gauge, width='stretch')
                 
                 # Risk metrics
                 col_a, col_b, col_c = st.columns(3)
@@ -590,28 +616,28 @@ def main():
         st.subheader("Weather Data Trends")
         if not weather_data.empty:
             fig_weather = create_weather_chart(weather_data)
-            st.plotly_chart(fig_weather, use_container_width=True)
+            st.plotly_chart(fig_weather, width='stretch')
         
         # Prediction timeline
         st.subheader("Prediction Timeline")
         if not predictions.empty:
             fig_predictions = create_prediction_chart(predictions)
-            st.plotly_chart(fig_predictions, use_container_width=True)
+            st.plotly_chart(fig_predictions, width='stretch')
         
         # Recent alerts table
         st.subheader("Recent Alerts")
         alerts = predictions[predictions['prediction'] == 1].tail(10)
         if not alerts.empty:
-            st.dataframe(alerts[['datetime', 'probability', 'confidence']], use_container_width=True)
+            st.dataframe(alerts[['datetime', 'probability', 'confidence']], width='stretch')
         else:
             st.info("No recent cloud burst alerts")
         
         # Data tables (expandable)
         with st.expander("📊 Raw Weather Data"):
-            st.dataframe(weather_data.tail(24), use_container_width=True)
+            st.dataframe(weather_data.tail(24), width='stretch')
         
         with st.expander("🔮 Prediction History"):
-            st.dataframe(predictions.tail(24), use_container_width=True)
+            st.dataframe(predictions.tail(24), width='stretch')
     
     # Handle manual prediction (outside of live/sample conditional)
     if predict_button:
@@ -642,6 +668,9 @@ def main():
                 "probability": probability,
                 "confidence": "High" if probability > 0.7 else "Medium" if probability > 0.4 else "Low"
             })
+        
+        # Note: Manual predictions don't clear live predictions
+        # They are shown in sidebar only
     
     # Footer with last update time
     st.markdown("---")

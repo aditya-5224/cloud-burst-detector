@@ -19,7 +19,15 @@ class PredictionService:
     
     def __init__(self, model_dir: str = "./models"):
         """Initialize prediction service with trained models"""
-        self.model_dir = Path(model_dir)
+        # Get absolute path relative to project root
+        if not Path(model_dir).is_absolute():
+            # Try to find project root
+            current_file = Path(__file__).resolve()
+            project_root = current_file.parent.parent.parent  # Go up to project root
+            self.model_dir = project_root / model_dir.lstrip('./')
+        else:
+            self.model_dir = Path(model_dir)
+        
         self.models = {}
         self.feature_names = None
         self.model_loaded = False
@@ -28,18 +36,31 @@ class PredictionService:
     def _load_primary_model(self):
         """Load the primary Random Forest model"""
         try:
-            model_path = self.model_dir / 'random_forest_model.pkl'
+            logger.info(f"Looking for model in: {self.model_dir}")
+            
+            # Try trained subdirectory first
+            model_path = self.model_dir / 'trained' / 'random_forest_model.pkl'
+            logger.info(f"Trying path: {model_path}")
+            
+            # Fallback to root models directory
+            if not model_path.exists():
+                model_path = self.model_dir / 'random_forest_model.pkl'
+                logger.info(f"Trying fallback path: {model_path}")
             
             if not model_path.exists():
-                logger.error(f"Model not found: {model_path}")
+                logger.error(f"Model not found at: {model_path}")
+                logger.error(f"Current working directory: {Path.cwd()}")
+                logger.error(f"Model directory contents: {list(self.model_dir.iterdir()) if self.model_dir.exists() else 'Directory does not exist'}")
                 return
             
             self.models['random_forest'] = joblib.load(model_path)
-            self.feature_names = self.models['random_forest'].feature_names_in_.tolist()
+            # Ensure feature_names is a Python list, not numpy array
+            self.feature_names = list(self.models['random_forest'].feature_names_in_)
             self.model_loaded = True
             
             logger.info(f"Loaded Random Forest model from {model_path}")
             logger.info(f"Expected features: {len(self.feature_names)}")
+            logger.info(f"Feature names type: {type(self.feature_names)}")
             
         except Exception as e:
             logger.error(f"Failed to load primary model: {e}")
@@ -67,6 +88,10 @@ class PredictionService:
     
     def predict(self, features: pd.DataFrame, model_name: str = 'random_forest') -> Dict:
         """Make prediction using specified model"""
+        logger.info(f"Received features DataFrame with columns: {list(features.columns)}")
+        logger.info(f"Expected feature names: {self.feature_names}")
+        logger.info(f"Columns match: {list(features.columns) == self.feature_names}")
+        
         is_valid, error_msg = self.validate_features(features)
         if not is_valid:
             return {
@@ -76,7 +101,9 @@ class PredictionService:
                 'probability': None
             }
         
-        features = features[self.feature_names]
+        # Features are already in correct order, no need to reorder
+        # Just ensure they match exactly
+        logger.info(f"Features validated successfully")
         
         try:
             prediction = self.models[model_name].predict(features)

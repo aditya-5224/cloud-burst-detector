@@ -122,28 +122,81 @@ async def predict_live(request: LivePredictionRequest):
         features = {feature: 0.0 for feature in expected_features}
         
         # Map the available weather data to the expected features
-        # This is a simplified mapping - ideally should use full feature engineering
         feature_mapping = {
             'temperature_2m': weather['temperature'],
             'relative_humidity_2m': weather['humidity'],
             'pressure_msl': weather['pressure'],
             'precipitation': weather['precipitation'],
             'wind_speed_10m': weather['wind_speed'] / 3.6,  # Convert km/h to m/s
-            'cloud_cover': weather['cloud_cover'],
+            'wind_direction_10m': weather.get('wind_direction', 0),
+            'cloud_cover_total': weather['cloud_cover'],
         }
         
-        # Update features dict with available weather data
+        # Estimate atmospheric stability indices from basic weather data
+        # These are simplified approximations - ideally would calculate from upper air data
+        temp_c = weather['temperature']
+        humidity = weather['humidity']
+        pressure = weather['pressure']
+        
+        # CAPE approximation (Convective Available Potential Energy)
+        # Higher temps + humidity can indicate potential CAPE
+        cape_estimate = max(0, (temp_c - 15) * (humidity / 100) * 100)
+        
+        # Lifted Index approximation (negative = unstable)
+        # Simplified: lower pressure + higher temp = more unstable
+        lifted_index = (pressure - 1000) / 10 - (temp_c - 20) / 5
+        
+        # K-Index (measure of thunderstorm potential)
+        # Higher humidity + moderate temps = higher K
+        k_index = (temp_c - 15) + (humidity - 40) / 10
+        
+        # Total Totals Index
+        total_totals = temp_c + humidity / 5 - 40
+        
+        # Showalter Index (stability indicator)
+        showalter_index = lifted_index * 0.8
+        
+        # Update features with weather data
         for feature_name, value in feature_mapping.items():
-            # Update exact match
             if feature_name in features:
                 features[feature_name] = value
-            # Also update any rolling/statistical features with the same base value
-            for feat in expected_features:
-                if feature_name in feat:
-                    features[feat] = value
         
-        # Make prediction
-        features_df = pd.DataFrame([features])
+        # Add atmospheric indices (handling duplicates properly)
+        # Note: Model has 'cape' listed twice, so we need to set both
+        cape_value = cape_estimate
+        lifted_index_value = lifted_index
+        k_index_value = k_index
+        total_totals_value = total_totals
+        showalter_index_value = showalter_index
+        
+        # Create features dataframe with correct column order matching model
+        feature_values = []
+        for feature_name in expected_features:
+            if feature_name == 'cape':
+                feature_values.append(cape_value)
+            elif feature_name == 'lifted_index':
+                feature_values.append(lifted_index_value)
+            elif feature_name == 'k_index':
+                feature_values.append(k_index_value)
+            elif feature_name == 'total_totals':
+                feature_values.append(total_totals_value)
+            elif feature_name == 'showalter_index':
+                feature_values.append(showalter_index_value)
+            elif feature_name in features:
+                feature_values.append(features[feature_name])
+            else:
+                feature_values.append(0.0)
+        
+        # Make prediction - ensure column names are in exact order
+        # Use the EXACT same feature list from the model - don't convert/copy
+        features_df = pd.DataFrame([feature_values], columns=expected_features)
+        
+        # Log for debugging
+        logger.info(f"Created features DataFrame with shape: {features_df.shape}")
+        logger.info(f"Feature columns: {list(features_df.columns)}")
+        logger.info(f"Expected features: {expected_features}")
+        logger.info(f"Match: {list(features_df.columns) == list(expected_features)}")
+        
         result = prediction_service.predict(features_df, model_name=request.model)
         
         # Add weather data to response
