@@ -276,6 +276,22 @@ def display_query_results(result):
         alerts = df_hourly[df_hourly['Alert'] == 'ALERT']
         if len(alerts) > 0:
             st.warning(f"🚨 Alert issued for {len(alerts)} hours: {', '.join(alerts['Time'].tolist())}")
+    else:
+        # No prediction data - show error message
+        st.subheader("🤖 Model Prediction")
+        st.error("❌ **Model prediction failed or unavailable**")
+        st.warning("""
+        **Possible reasons:**
+        - Model file not found at `./models/trained/random_forest_model.pkl`
+        - Feature engineering failed
+        - Weather data incomplete
+        - Model prediction error
+        
+        **Please check:**
+        1. Ensure model is trained and saved
+        2. Verify weather data was fetched successfully
+        3. Check terminal logs for error messages
+        """)
     
     # Validation results
     if result.get('validation'):

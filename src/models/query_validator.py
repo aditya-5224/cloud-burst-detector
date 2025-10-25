@@ -332,29 +332,80 @@ class QueryBasedValidator:
     def _predict_on_weather_data(self, weather_df: pd.DataFrame) -> Optional[pd.DataFrame]:
         """Run model predictions on weather data"""
         try:
-            # Use only the basic features that the model was trained with
-            # The model expects: temperature, humidity, precipitation, pressure, 
-            # cloud_cover, wind_speed, wind_direction, cape
+            # The model expects 13 features in this exact order:
+            # 1-8: Basic weather features
+            # 9-13: Atmospheric stability indices (including duplicate cape)
             
             time_col = weather_df['time'].copy()
             
-            # Create basic feature dataframe with expected columns
-            # IMPORTANT: Column names must match exactly what model was trained with
-            X = pd.DataFrame({
-                'temperature_2m': weather_df['temperature_2m'],
-                'relative_humidity_2m': weather_df['relative_humidity_2m'],
-                'precipitation': weather_df['precipitation'],
-                'pressure_msl': weather_df['pressure_msl'],
-                'cloud_cover_total': weather_df.get('cloud_cover_total', weather_df.get('cloud_cover', 0)),
-                'wind_speed_10m': weather_df.get('wind_speed_10m', 0),
-                'wind_direction_10m': weather_df.get('wind_direction_10m', 0),
-                'cape': weather_df.get('cape', 0)  # CAPE from Open-Meteo API (Convective Available Potential Energy)
-            })
+            # Calculate atmospheric indices for each row
+            from src.features.atmospheric_indices import AtmosphericIndices
+            indices_calc = AtmosphericIndices()
+            
+            # Calculate indices for all rows
+            lifted_indices = []
+            k_indices = []
+            total_totals = []
+            showalter_indices = []
+            
+            for _, row in weather_df.iterrows():
+                # Get basic parameters
+                temp = row['temperature_2m']
+                pressure = row['pressure_msl']
+                humidity = row['relative_humidity_2m']
+                
+                # Calculate all atmospheric indices (automatically estimates upper levels)
+                indices = indices_calc.calculate_all_indices(
+                    surface_temp_c=temp,
+                    surface_pressure_hpa=pressure,
+                    surface_rh=humidity
+                )
+                
+                lifted_indices.append(indices['lifted_index'])
+                k_indices.append(indices['k_index'])
+                total_totals.append(indices['total_totals'])
+                showalter_indices.append(indices['showalter_index'])
+            
+            # Get CAPE value (will be duplicated)
+            cape_values = weather_df.get('cape', pd.Series([0] * len(weather_df)))
+            
+            # Create feature dataframe with ALL 13 features in EXACT order
+            # CRITICAL: Must match model.feature_names_in_ exactly including duplicate cape
+            # We need to create DataFrame with duplicate column names using numpy array
+            import numpy as np
+            
+            # Build the feature array in exact order with all 13 columns
+            feature_array = np.column_stack([
+                weather_df['temperature_2m'].values,
+                weather_df['relative_humidity_2m'].values,
+                weather_df['precipitation'].values,
+                weather_df['pressure_msl'].values,
+                weather_df.get('cloud_cover_total', weather_df.get('cloud_cover', pd.Series([0] * len(weather_df)))).values,
+                weather_df.get('wind_speed_10m', pd.Series([0] * len(weather_df))).values,
+                weather_df.get('wind_direction_10m', pd.Series([0] * len(weather_df))).values,
+                cape_values.values,  # CAPE #1
+                cape_values.values,  # CAPE #2 (duplicate)
+                lifted_indices,
+                k_indices,
+                total_totals,
+                showalter_indices
+            ])
+            
+            # Create DataFrame with exact column names (including duplicate 'cape')
+            column_names = [
+                'temperature_2m', 'relative_humidity_2m', 'precipitation', 'pressure_msl',
+                'cloud_cover_total', 'wind_speed_10m', 'wind_direction_10m',
+                'cape', 'cape',  # Duplicate cape as model expects
+                'lifted_index', 'k_index', 'total_totals', 'showalter_index'
+            ]
+            
+            X = pd.DataFrame(feature_array, columns=column_names)
             
             # Handle any missing values
             X = X.fillna(0)
             
-            print(f"   Using {len(X.columns)} basic features for prediction")
+            print(f"   Using {len(X.columns)} features for prediction")
+            print(f"   Features: {list(X.columns)}")
             
             # Make predictions
             predictions = self.model.predict(X)
@@ -373,6 +424,8 @@ class QueryBasedValidator:
             
         except Exception as e:
             logger.error(f"Prediction error: {e}")
+            import traceback
+            traceback.print_exc()
             return None
     
     def _save_query_result(self, result: Dict):
