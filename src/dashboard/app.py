@@ -26,6 +26,14 @@ import logging
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional, Tuple
 
+# Import page modules at the top to avoid re-importing
+try:
+    from query_validation_page import show_query_validation
+    from historical_page import show_historical_analysis
+except ImportError:
+    from src.dashboard.query_validation_page import show_query_validation
+    from src.dashboard.historical_page import show_historical_analysis
+
 # Setup logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -37,6 +45,190 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
+
+# Custom CSS for elegant, smooth, and professional design
+st.markdown("""
+<style>
+    /* Import Google Fonts for professional typography */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    
+    /* Global smooth animations */
+    * {
+        font-family: 'Inter', sans-serif;
+    }
+    
+    /* Main container with elegant fade-in */
+    .main .block-container {
+        animation: fadeInUp 0.5s ease-out;
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    }
+    
+    @keyframes fadeInUp {
+        from { 
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to { 
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    /* Elegant gradient header */
+    h1 {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+        margin-bottom: 1rem;
+    }
+    
+    h2, h3 {
+        font-weight: 600;
+        color: #1e293b;
+        letter-spacing: -0.3px;
+    }
+    
+    /* Smooth sidebar styling */
+    section[data-testid="stSidebar"] {
+        background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+        border-right: 1px solid #e2e8f0;
+    }
+    
+    section[data-testid="stSidebar"] h1,
+    section[data-testid="stSidebar"] h2,
+    section[data-testid="stSidebar"] h3 {
+        color: #334155;
+    }
+    
+    /* Elegant metric cards */
+    [data-testid="stMetricValue"] {
+        font-size: 2rem;
+        font-weight: 600;
+        color: #0f172a;
+    }
+    
+    [data-testid="stMetricLabel"] {
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #64748b;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    /* Smooth card-like containers */
+    .element-container {
+        animation: slideIn 0.4s ease-out;
+    }
+    
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateX(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+    
+    /* Professional button styling */
+    .stButton > button {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 0.75rem 2rem;
+        font-weight: 500;
+        letter-spacing: 0.3px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(102, 126, 234, 0.2);
+    }
+    
+    .stButton > button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 12px rgba(102, 126, 234, 0.3);
+    }
+    
+    /* Elegant form inputs */
+    .stTextInput > div > div > input,
+    .stNumberInput > div > div > input,
+    .stSelectbox > div > div > select {
+        border-radius: 8px;
+        border: 1px solid #e2e8f0;
+        padding: 0.75rem;
+        transition: all 0.3s ease;
+    }
+    
+    .stTextInput > div > div > input:focus,
+    .stNumberInput > div > div > input:focus,
+    .stSelectbox > div > div > select:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+    
+    /* Smooth data frame styling */
+    .dataframe {
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+    
+    /* Clean tabs */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 8px;
+    }
+    
+    .stTabs [data-baseweb="tab"] {
+        border-radius: 8px;
+        padding: 0.75rem 1.5rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .stTabs [aria-selected="true"] {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+    }
+    
+    /* Elegant dividers */
+    hr {
+        margin: 2rem 0;
+        border: none;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, #e2e8f0, transparent);
+    }
+    
+    /* Success/Error message styling */
+    .stSuccess, .stError, .stWarning, .stInfo {
+        border-radius: 8px;
+        padding: 1rem;
+        animation: fadeIn 0.3s ease;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    
+    /* Hide Streamlit branding for professional look */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    
+    /* Smooth scrolling */
+    html {
+        scroll-behavior: smooth;
+    }
+    
+    /* Card-like sections */
+    .stMarkdown {
+        line-height: 1.6;
+        color: #475569;
+    }
+</style>
+""", unsafe_allow_html=True)
 
 # Load configuration
 @st.cache_data
@@ -157,161 +349,7 @@ def get_live_prediction(latitude: float, longitude: float, model: str = 'random_
         logger.error(f"Live prediction failed: {e}")
         return {'success': False, 'error': str(e)}
 
-# Generate sample data functions
-@st.cache_data(ttl=300)  # Cache for 5 minutes
-def generate_sample_weather_data(hours: int = 48) -> pd.DataFrame:
-    """Generate sample weather data for demonstration"""
-    np.random.seed(42)
-    
-    dates = pd.date_range(
-        start=datetime.now() - timedelta(hours=hours),
-        end=datetime.now(),
-        freq='h'
-    )
-    
-    # Generate realistic weather patterns
-    temp_base = 25 + 5 * np.sin(np.arange(len(dates)) * 2 * np.pi / 24)  # Daily cycle
-    
-    data = pd.DataFrame({
-        'datetime': dates,
-        'temperature_2m': temp_base + np.random.normal(0, 2, len(dates)),
-        'relative_humidity_2m': np.clip(70 + 20 * np.sin(np.arange(len(dates)) * 2 * np.pi / 24) + 
-                                       np.random.normal(0, 5, len(dates)), 30, 95),
-        'pressure_msl': 1013 + np.random.normal(0, 8, len(dates)),
-        'wind_speed_10m': np.clip(np.random.exponential(4, len(dates)), 0, 25),
-        'wind_direction_10m': np.random.uniform(0, 360, len(dates)),
-        'cloud_cover': np.clip(np.random.uniform(20, 90, len(dates)), 0, 100),
-        'precipitation': np.clip(np.random.exponential(0.8, len(dates)), 0, 20)
-    })
-    
-    return data
-
-@st.cache_data(ttl=300)
-def generate_sample_predictions(weather_data: pd.DataFrame) -> pd.DataFrame:
-    """Generate sample predictions based on weather conditions"""
-    predictions = []
-    
-    for _, row in weather_data.iterrows():
-        # Create conditions that increase cloud burst probability
-        high_humidity = row['relative_humidity_2m'] > 80
-        high_temp = row['temperature_2m'] > 28
-        low_pressure = row['pressure_msl'] < 1005
-        high_clouds = row['cloud_cover'] > 70
-        
-        # Calculate probability based on conditions
-        probability = 0.1  # Base probability
-        
-        if high_humidity:
-            probability += 0.3
-        if high_temp:
-            probability += 0.2
-        if low_pressure:
-            probability += 0.25
-        if high_clouds:
-            probability += 0.15
-        
-        # Add some randomness
-        probability += np.random.normal(0, 0.1)
-        probability = np.clip(probability, 0, 1)
-        
-        prediction = 1 if probability > 0.5 else 0
-        
-        predictions.append({
-            'datetime': row['datetime'],
-            'prediction': prediction,
-            'probability': probability,
-            'confidence': 'High' if probability > 0.8 else 'Medium' if probability > 0.6 else 'Low'
-        })
-    
-    return pd.DataFrame(predictions)
-
 # Visualization functions
-def create_weather_chart(data: pd.DataFrame) -> go.Figure:
-    """Create weather data time series chart"""
-    fig = make_subplots(
-        rows=4, cols=1,
-        subplot_titles=('Temperature & Humidity', 'Pressure', 'Wind Speed', 'Cloud Cover & Precipitation'),
-        vertical_spacing=0.08
-    )
-    
-    # Temperature and Humidity
-    fig.add_trace(
-        go.Scatter(x=data['datetime'], y=data['temperature_2m'], 
-                  name='Temperature (°C)', line=dict(color='red')),
-        row=1, col=1
-    )
-    fig.add_trace(
-        go.Scatter(x=data['datetime'], y=data['relative_humidity_2m'], 
-                  name='Humidity (%)', yaxis='y2', line=dict(color='blue')),
-        row=1, col=1
-    )
-    
-    # Pressure
-    fig.add_trace(
-        go.Scatter(x=data['datetime'], y=data['pressure_msl'], 
-                  name='Pressure (hPa)', line=dict(color='green')),
-        row=2, col=1
-    )
-    
-    # Wind Speed
-    fig.add_trace(
-        go.Scatter(x=data['datetime'], y=data['wind_speed_10m'], 
-                  name='Wind Speed (m/s)', line=dict(color='orange')),
-        row=3, col=1
-    )
-    
-    # Cloud Cover and Precipitation
-    fig.add_trace(
-        go.Scatter(x=data['datetime'], y=data['cloud_cover'], 
-                  name='Cloud Cover (%)', line=dict(color='gray')),
-        row=4, col=1
-    )
-    fig.add_trace(
-        go.Scatter(x=data['datetime'], y=data['precipitation'], 
-                  name='Precipitation (mm)', yaxis='y8', line=dict(color='cyan')),
-        row=4, col=1
-    )
-    
-    fig.update_layout(height=800, showlegend=True, title_text="Weather Data Trends")
-    return fig
-
-def create_prediction_chart(predictions: pd.DataFrame) -> go.Figure:
-    """Create prediction probability chart"""
-    fig = go.Figure()
-    
-    # Add probability line
-    fig.add_trace(go.Scatter(
-        x=predictions['datetime'],
-        y=predictions['probability'],
-        mode='lines+markers',
-        name='Cloud Burst Probability',
-        line=dict(color='purple', width=2),
-        marker=dict(size=4)
-    ))
-    
-    # Add threshold line
-    fig.add_hline(y=0.5, line_dash="dash", line_color="red", 
-                  annotation_text="Decision Threshold (50%)")
-    
-    # Color background based on prediction
-    for i, row in predictions.iterrows():
-        if row['prediction'] == 1:
-            fig.add_vrect(
-                x0=row['datetime'] - timedelta(minutes=30),
-                x1=row['datetime'] + timedelta(minutes=30),
-                fillcolor="red", opacity=0.2,
-                line_width=0
-            )
-    
-    fig.update_layout(
-        title="Cloud Burst Prediction Probability",
-        xaxis_title="Time",
-        yaxis_title="Probability",
-        height=400
-    )
-    
-    return fig
-
 def create_map_visualization(config: Dict) -> folium.Map:
     """Create interactive map with region overlay"""
     region = config['regions']['default']
@@ -384,37 +422,42 @@ def create_risk_gauge(probability: float) -> go.Figure:
     fig.update_layout(height=300)
     return fig
 
-# Main dashboard function
+# Main dashboard function  
 def main():
     """Main dashboard function"""
+    # Initialize session state FIRST (before any rendering)
+    if 'live_result' not in st.session_state:
+        st.session_state.live_result = None
+    
     config = load_config()
     
-    # Title and header
-    st.title("🌧️ " + config.get('dashboard', {}).get('title', 'Cloud Burst Prediction Dashboard'))
-    
-    # Navigation
+    # Navigation (in sidebar)
     st.sidebar.title("Navigation")
     page = st.sidebar.radio(
         "Select Page",
-        ["🏠 Live Dashboard", "🔍 Query Validation", "� Historical Analysis"],
-        label_visibility="collapsed"
+        ["🏠 Live Dashboard", "🔍 Query Validation", "📊 Historical Analysis"],
+        label_visibility="collapsed",
+        key="navigation_page"
     )
     
-    # Show selected page
+    # Show selected page with loading placeholder
     if page == "🔍 Query Validation":
-        try:
-            from query_validation_page import show_query_validation
-        except ImportError:
-            from src.dashboard.query_validation_page import show_query_validation
+        # Create placeholder to show loading message
+        placeholder = st.empty()
+        placeholder.info("⏳ Loading Query Validation page...")
         show_query_validation()
+        placeholder.empty()  # Clear the loading message
         return
     elif page == "📊 Historical Analysis":
-        try:
-            from historical_page import show_historical_analysis
-        except ImportError:
-            from src.dashboard.historical_page import show_historical_analysis
+        # Create placeholder to show loading message
+        placeholder = st.empty()
+        placeholder.info("⏳ Loading Historical Analysis page...")
         show_historical_analysis()
+        placeholder.empty()  # Clear the loading message
         return
+    
+    # Only set title for main dashboard page
+    st.title("🌧️ " + config.get('dashboard', {}).get('title', 'Cloud Burst Prediction Dashboard'))
     
     # Sidebar for main dashboard
     st.sidebar.header("Dashboard Controls")
@@ -432,25 +475,10 @@ def main():
     # Data refresh button
     if st.sidebar.button("🔄 Refresh Data"):
         st.cache_data.clear()
-        st.rerun()
+        # No rerun needed - cache clear will take effect on next interaction
     
     # Time range selector
     hours_back = st.sidebar.slider("Hours of Historical Data", 12, 168, 48)
-    
-    # Live Weather Section
-    st.sidebar.subheader("📍 Live Weather Prediction")
-    
-    # Show status indicator
-    if st.session_state.get('live_result') and not st.session_state.get('show_sample_data', False):
-        st.sidebar.info("✅ **ACTIVE:** Displaying live prediction results in main view")
-    else:
-        st.sidebar.write("Get real-time predictions for any location")
-    
-    with st.sidebar.form("live_weather_form"):
-        lat = st.number_input("Latitude", -90.0, 90.0, 19.0760, format="%.4f", help="Mumbai: 19.0760")
-        lon = st.number_input("Longitude", -180.0, 180.0, 72.8777, format="%.4f", help="Mumbai: 72.8777")
-        model_choice = st.selectbox("Model", ['random_forest', 'svm', 'lstm'], index=0)
-        live_predict_button = st.form_submit_button("🌍 Get Live Prediction")
     
     # Manual prediction inputs
     st.sidebar.subheader("Manual Prediction")
@@ -465,36 +493,52 @@ def main():
         
         predict_button = st.form_submit_button("🔮 Predict")
     
-    # Initialize session state for live prediction
-    if 'live_result' not in st.session_state:
-        st.session_state.live_result = None
-    if 'show_sample_data' not in st.session_state:
-        st.session_state.show_sample_data = False
-    
-    # Handle live weather prediction
-    if live_predict_button:
-        with st.spinner(f"🌐 Fetching live weather data for ({lat}, {lon})..."):
-            live_result = get_live_prediction(lat, lon, model_choice)
-            
-            if live_result and live_result.get('success') is not False:
-                # Store in session state
-                st.session_state.live_result = live_result
-                st.session_state.show_sample_data = False
-                st.success("✅ Live prediction complete!")
-                st.rerun()
-            else:
-                st.session_state.live_result = None
-                error_msg = live_result.get('error', 'Unknown error') if live_result else 'No response from API'
-                st.error(f"❌ Failed to fetch live weather data: {error_msg}")
-                st.info("💡 Make sure the API is running on http://localhost:8000")
-                if live_result:
-                    st.error(f"Error details: {live_result.get('error', 'Unknown error')}")
-                else:
-                    st.error("No response from API. Check if API server is running on http://localhost:8000")
+    # Session state already initialized at top of main()
     
     # Main content area
-    # Check if we have live prediction results and not showing sample data
-    if st.session_state.live_result and not st.session_state.show_sample_data:
+    
+    # Live Weather Prediction Form (moved from sidebar to center)
+    if not st.session_state.get('live_result'):
+        # Show form when no results
+        st.subheader("🌍 Live Cloud Burst Prediction")
+        st.markdown("Enter coordinates to get real-time **cloud burst risk assessment** (extreme precipitation events)")
+        
+        with st.form("live_weather_form"):
+            col1, col2, col3 = st.columns(3)
+            
+            with col1:
+                lat = st.number_input("Latitude", -90.0, 90.0, 19.0760, format="%.4f", help="Mumbai: 19.0760")
+            with col2:
+                lon = st.number_input("Longitude", -180.0, 180.0, 72.8777, format="%.4f", help="Mumbai: 72.8777")
+            with col3:
+                model_choice = st.selectbox("Model", ['random_forest', 'svm', 'lstm'], index=0)
+            
+            live_predict_button = st.form_submit_button("🌍 Get Live Prediction", use_container_width=True)
+        
+        # Handle live weather prediction
+        if live_predict_button:
+            with st.spinner(f"🌐 Fetching live weather data for ({lat}, {lon})..."):
+                live_result = get_live_prediction(lat, lon, model_choice)
+                
+                if live_result and live_result.get('success') is not False:
+                    # Store in session state
+                    st.session_state.live_result = live_result
+                    st.success("✅ Live prediction complete! Results displayed below.")
+                    st.rerun()  # Refresh to show results
+                else:
+                    st.session_state.live_result = None
+                    error_msg = live_result.get('error', 'Unknown error') if live_result else 'No response from API'
+                    st.error(f"❌ Failed to fetch live weather data: {error_msg}")
+                    st.info("💡 Make sure the API is running on http://localhost:8000")
+                    if live_result:
+                        st.error(f"Error details: {live_result.get('error', 'Unknown error')}")
+                    else:
+                        st.error("No response from API. Check if API server is running on http://localhost:8000")
+        
+        st.markdown("---")
+    
+    # Check if we have live prediction results
+    if st.session_state.live_result:
         # Display Live Weather Results
         live_result = st.session_state.live_result
         weather_data = live_result.get('weather_data', {})
@@ -504,16 +548,15 @@ def main():
         
         # Show location name prominently in header
         location_name = weather_data.get('location_name', 'Unknown Location')
-        st.header(f"🌍 Live Weather Prediction - {location_name}")
+        st.header(f"🌍 Live Cloud Burst Prediction - {location_name}")
         
-        # Add a button to clear and go back to sample data
+        # Add a button to clear prediction
         col_btn1, col_btn2 = st.columns([1, 4])
         with col_btn1:
-            if st.button("🔄 Back to Sample Data", key="back_to_sample"):
-                st.session_state.show_sample_data = True
-                st.rerun()
+            if st.button("🔄 Clear Prediction", key="clear_prediction"):
+                st.session_state.live_result = None
         with col_btn2:
-            st.caption("Click to return to the sample data demonstration view")
+            st.caption("Click to clear current prediction and make a new one")
         
         # Display location details
         location_details = weather_data.get('location_details', {})
@@ -541,25 +584,28 @@ def main():
         with col_w7:
             st.metric("Risk Level", live_result.get('risk_level', 'N/A'))
         with col_w8:
-            st.metric("Probability", f"{live_result.get('probability', 0):.1%}")
+            st.metric("Cloud Burst Probability", f"{live_result.get('probability', 0):.1%}")
+        
+        st.markdown("---")
         
         # Display prediction result with gauge
-        st.subheader("🔮 Prediction Result")
+        st.subheader("🔮 Cloud Burst Risk Assessment")
+        st.info("ℹ️ **Note:** The probability shown is for **cloud burst occurrence**, not general rainfall. Cloud bursts are extreme precipitation events (100+ mm/hour) that can cause flash floods.")
         
         col1, col2 = st.columns([2, 1])
         
         with col1:
             # Risk gauge
             fig_gauge = create_risk_gauge(live_result.get('probability', 0))
-            st.plotly_chart(fig_gauge, width='stretch')
+            st.plotly_chart(fig_gauge)
         
         with col2:
             if live_result.get('prediction') == 1:
                 st.error(f"⚠️ **CLOUD BURST ALERT**")
-                st.error(f"Probability: {live_result.get('probability', 0):.1%}")
+                st.error(f"Cloud Burst Probability: {live_result.get('probability', 0):.1%}")
             else:
                 st.success(f"✅ **NO IMMEDIATE RISK**")
-                st.success(f"Probability: {live_result.get('probability', 0):.1%}")
+                st.success(f"Cloud Burst Probability: {live_result.get('probability', 0):.1%}")
             
             st.info(f"🤖 Model: {live_result.get('model', 'N/A')}")
             st.info(f"📡 Source: {weather_data.get('source', 'N/A')}")
@@ -578,66 +624,71 @@ def main():
             })
     
     else:
-        # Display Sample Data (Default View)
-        col1, col2 = st.columns([2, 1])
+        # No live prediction - show instructions
+        st.info("👈 **Get started:** Enter coordinates above and click '🌍 Get Live Prediction' to see real-time cloud burst risk assessment")
+        
+        st.markdown("---")
+        
+        col1, col2 = st.columns(2)
         
         with col1:
-            # Current risk level
-            st.subheader("Current Risk Assessment (Sample Data)")
+            st.subheader("📍 How to Use")
+            st.markdown("""
+            **Step 1:** Enter your location
+            - Provide latitude and longitude coordinates
+            - Or use the quick select for known events
             
-            # Get latest prediction (using sample data)
-            weather_data = generate_sample_weather_data(hours_back)
-            predictions = generate_sample_predictions(weather_data)
+            **Step 2:** Select model
+            - Choose from Random Forest, SVM, or LSTM
             
-            if not predictions.empty:
-                latest_prediction = predictions.iloc[-1]
-                
-                # Risk gauge
-                fig_gauge = create_risk_gauge(latest_prediction['probability'])
-                st.plotly_chart(fig_gauge, width='stretch')
-                
-                # Risk metrics
-                col_a, col_b, col_c = st.columns(3)
-                with col_a:
-                    st.metric("Risk Level", latest_prediction['confidence'])
-                with col_b:
-                    st.metric("Probability", f"{latest_prediction['probability']:.1%}")
-                with col_c:
-                    prediction_text = "⚠️ ALERT" if latest_prediction['prediction'] == 1 else "✅ SAFE"
-                    st.metric("Status", prediction_text)
+            **Step 3:** Get prediction
+            - Click '🌍 Get Live Prediction'
+            - View real-time weather data and risk assessment
+            
+            **Alternative:** Use manual input
+            - Enter weather parameters manually
+            - Get instant prediction in sidebar
+            """)
         
         with col2:
-            # Region map
-            st.subheader("Monitoring Region")
-            map_obj = create_map_visualization(config)
-            st_folium(map_obj, width=350, height=300)
+            st.subheader("🎯 Features")
+            st.markdown("""
+            **Live Weather Data**
+            - Real-time data from Open-Meteo API
+            - Current temperature, humidity, pressure
+            - Precipitation and cloud cover
+            
+            **AI Prediction**
+            - Machine learning models
+            - Probability-based risk assessment
+            - Alert levels and recommendations
+            
+            **Historical Validation**
+            - Query past cloud burst events
+            - Validate model accuracy
+            - View event database
+            """)
         
-        # Weather trends
-        st.subheader("Weather Data Trends")
-        if not weather_data.empty:
-            fig_weather = create_weather_chart(weather_data)
-            st.plotly_chart(fig_weather, width='stretch')
+        st.markdown("---")
         
-        # Prediction timeline
-        st.subheader("Prediction Timeline")
-        if not predictions.empty:
-            fig_predictions = create_prediction_chart(predictions)
-            st.plotly_chart(fig_predictions, width='stretch')
+        # Quick actions
+        st.subheader("🚀 Quick Actions")
+        qcol1, qcol2, qcol3 = st.columns(3)
         
-        # Recent alerts table
-        st.subheader("Recent Alerts")
-        alerts = predictions[predictions['prediction'] == 1].tail(10)
-        if not alerts.empty:
-            st.dataframe(alerts[['datetime', 'probability', 'confidence']], width='stretch')
-        else:
-            st.info("No recent cloud burst alerts")
+        with qcol1:
+            st.markdown("**🌍 Live Prediction**")
+            st.caption("Get real-time prediction for any location")
+            st.markdown("👈 Use sidebar form")
         
-        # Data tables (expandable)
-        with st.expander("📊 Raw Weather Data"):
-            st.dataframe(weather_data.tail(24), width='stretch')
+        with qcol2:
+            st.markdown("**🔍 Query Validation**")
+            st.caption("Check historical cloud burst events")
+            st.markdown("📊 Switch to Query Validation page")
         
-        with st.expander("🔮 Prediction History"):
-            st.dataframe(predictions.tail(24), width='stretch')
+        with qcol3:
+            st.markdown("**📈 Historical Analysis**")
+            st.caption("View batch validation results")
+            st.markdown("📊 Switch to Historical Analysis page")
     
     # Handle manual prediction (outside of live/sample conditional)
     if predict_button:

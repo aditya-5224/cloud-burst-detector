@@ -270,7 +270,7 @@ def display_query_results(result):
             height=400
         )
         
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig)
         
         # Show alerts
         alerts = df_hourly[df_hourly['Alert'] == 'ALERT']
@@ -397,7 +397,7 @@ def show_database_events(events_db):
         margin=dict(l=0, r=0, t=0, b=0)
     )
     
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig)
 
 
 def show_batch_results(validator):
@@ -413,8 +413,8 @@ def show_batch_results(validator):
         if st.button("🚀 Run Batch Validation Now"):
             with st.spinner("Validating all events... This may take a few minutes..."):
                 results = validator.batch_validate_database()
-                st.success("✅ Batch validation complete!")
-                st.rerun()
+                st.success("✅ Batch validation complete! Refresh the page to see results.")
+                # Removed st.rerun() to prevent flickering
         
         return
     
@@ -450,7 +450,7 @@ def show_batch_results(validator):
             marker=dict(colors=['green', 'red'])
         )])
         fig.update_layout(title='Detection Performance', height=300)
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig)
     
     with col2:
         # Metrics

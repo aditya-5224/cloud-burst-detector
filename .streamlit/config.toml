@@ -1,0 +1,50 @@
+[server]
+# Disable file watcher to reduce flickering
+fileWatcherType = "none"
+
+# Faster re-runs
+runOnSave = false
+
+# Reduce memory usage
+maxUploadSize = 50
+
+# Disable headless mode message
+headless = false
+
+# Enable CORS
+enableCORS = false
+
+# Enable XSRF protection
+enableXsrfProtection = false
+
+[browser]
+# Disable gathering usage stats
+gatherUsageStats = false
+
+# Server address
+serverAddress = "localhost"
+
+# Server port
+serverPort = 8501
+
+[client]
+# Display toolbar in developer mode
+toolbarMode = "minimal"
+
+# Show error details
+showErrorDetails = true
+
+[runner]
+# Faster script runs
+fastReruns = true
+
+# Magic enabled
+magicEnabled = false
+
+[theme]
+# Optional: Define a consistent theme to avoid flashing
+primaryColor = "#FF4B4B"
+backgroundColor = "#FFFFFF"
+secondaryBackgroundColor = "#F0F2F6"
+textColor = "#262730"
+font = "sans serif"
