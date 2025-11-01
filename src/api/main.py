@@ -1,4 +1,4 @@
-﻿from fastapi import FastAPI, HTTPException
+﻿from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 from typing import Optional, Dict, List
@@ -7,16 +7,29 @@ from datetime import datetime
 import logging
 import sys
 from pathlib import Path
+import time
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 from src.api.prediction_service import get_prediction_service
 from src.data.live_weather import live_weather_collector
+from src.data.quality_middleware import DataQualityMiddleware, DataQualityHTTPMiddleware
+from src.data.cache_manager import get_cache_manager, CacheMiddleware, WeatherCache, PredictionCache
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-app = FastAPI(title="Cloud Burst Prediction API", version="1.0.0", docs_url="/docs")
+app = FastAPI(title="Cloud Burst Prediction API", version="2.0.0", docs_url="/docs")
+
+# Initialize quality and cache middleware
+data_quality_validator = DataQualityMiddleware()
+cache_manager = get_cache_manager()
+weather_cache = WeatherCache(cache_manager)
+prediction_cache = PredictionCache(cache_manager)
+
+# Add middleware (order matters - CORS first, then cache, then quality)
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=True, allow_methods=["*"], allow_headers=["*"])
+app.add_middleware(CacheMiddleware, cache_manager=cache_manager)
+app.add_middleware(DataQualityHTTPMiddleware, validator=data_quality_validator)
 
 prediction_service = get_prediction_service()
 
@@ -237,12 +250,95 @@ async def clear_weather_cache():
         logger.error(f"Cache clear error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
+# ============================================================================
+# Monitoring & Admin Endpoints
+# ============================================================================
+
+@app.get("/monitoring/cache/stats")
+async def get_cache_monitoring():
+    """Get comprehensive cache statistics"""
+    return {
+        "success": True,
+        "cache_stats": cache_manager.get_stats(),
+        "timestamp": datetime.now().isoformat()
+    }
+
+@app.post("/monitoring/cache/clear")
+async def clear_cache():
+    """Clear all cached data"""
+    try:
+        cache_manager.clear_all()
+        return {
+            "success": True,
+            "message": "All caches cleared",
+            "timestamp": datetime.now().isoformat()
+        }
+    except Exception as e:
+        logger.error(f"Cache clear error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/monitoring/data-quality/report")
+async def get_data_quality_report():
+    """Get data quality metrics report"""
+    try:
+        report = data_quality_validator.get_quality_report(last_n=100)
+        return {
+            "success": True,
+            "report": report,
+            "timestamp": datetime.now().isoformat()
+        }
+    except Exception as e:
+        logger.error(f"Quality report error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/admin/retrain")
+async def trigger_retraining(model_type: str = 'random_forest', days_back: int = 30):
+    """Trigger model retraining pipeline"""
+    try:
+        from src.models.retraining_pipeline import ModelRetrainingPipeline
+        
+        pipeline = ModelRetrainingPipeline()
+        result = pipeline.run_retraining_pipeline(
+            model_type=model_type,
+            days_back=days_back
+        )
+        
+        return {
+            "success": result['success'],
+            "result": result,
+            "timestamp": datetime.now().isoformat()
+        }
+    except Exception as e:
+        logger.error(f"Retraining error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/admin/model/history")
+async def get_model_history(model_type: Optional[str] = None):
+    """Get model version history"""
+    try:
+        from src.models.retraining_pipeline import ModelRetrainingPipeline
+        
+        pipeline = ModelRetrainingPipeline()
+        history = pipeline.get_model_history(model_type=model_type)
+        
+        return {
+            "success": True,
+            "history": history,
+            "count": len(history),
+            "timestamp": datetime.now().isoformat()
+        }
+    except Exception as e:
+        logger.error(f"History fetch error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 @app.on_event("startup")
 async def startup():
     logger.info("="*80)
-    logger.info("Cloud Burst Prediction API Starting...")
+    logger.info("Cloud Burst Prediction API v2.0 Starting...")
+    logger.info("Features: Data Quality Validation, Caching, Model Retraining")
     info = prediction_service.get_model_info()
     logger.info(f"Model ready: {info['model_ready']}")
+    logger.info(f"Cache backend: {cache_manager.get_stats()['backend']}")
     logger.info("="*80)
 
 if __name__ == "__main__":

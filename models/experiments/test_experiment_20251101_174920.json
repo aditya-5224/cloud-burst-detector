@@ -1,0 +1,33 @@
+{
+  "experiment_id": "test_experiment_20251101_174920",
+  "strategy": "percentage",
+  "description": "Test experiment",
+  "variants": [
+    {
+      "variant_id": "control",
+      "model_path": "models/trained/random_forest_model.pkl",
+      "model_type": "random_forest",
+      "version": "v1",
+      "traffic_percentage": 50.0,
+      "description": "",
+      "metadata": {}
+    },
+    {
+      "variant_id": "treatment",
+      "model_path": "models/trained/random_forest_model.pkl",
+      "model_type": "random_forest",
+      "version": "v2",
+      "traffic_percentage": 50.0,
+      "description": "",
+      "metadata": {}
+    }
+  ],
+  "created_at": "2025-11-01T17:49:20.586010",
+  "status": "stopped",
+  "total_requests": 1,
+  "variant_counts": {
+    "control": 0,
+    "treatment": 1
+  },
+  "stopped_at": "2025-11-01T17:49:20.589252"
+}
